@@ -100,7 +100,7 @@ This notebook regenerates important modelling figures:
 ### Citation
 If you use this code, please cite the paper (see `CITATION.cff`, or use GitHub's Cite this repository button):
 ```bibtex
-@article{tarahi2026generalized,
+@article{to add,
   title   = {Generalized prefrontal task-progress sequences efficiently encode task structure},
   author  = {Tarahi, Ousama and Koshy, Kevin and Sauer, Jonas-Frederic},
   journal = {to add},
