@@ -32,9 +32,7 @@ The model is a discrete-time recurrent rate network trained in closed loop to pe
 | Trainable parameters | 93,200                                                                                                                                                 |
 | Seeds                | 20 matched control/constrained pairs                                                                                                                   |
 
-The training objective is
-The model is trained by minimizing
-
+The training objective is:
 ```math
 \mathcal{L} = L_{\mathrm{MSE}}
 + \lambda_1 \left( \lVert W_{\mathrm{in}} \rVert + \lVert W_{\mathrm{out}} \rVert \right)
@@ -98,7 +96,7 @@ This notebook regenerates important modelling figures:
     
 
 ### Citation
-If you use this code, please cite the paper (see `CITATION.cff`, or use GitHub's Cite this repository button):
+If you use this code, please cite the paper:
 ```bibtex
 @article{to add,
   title   = {Generalized prefrontal task-progress sequences efficiently encode task structure},
