@@ -1,36 +1,43 @@
 # mPFC Sequential Modeling
 
+
 ### Closed-loop recurrent network models of generalized task-progress sequences in the medial prefrontal cortex.  
 This repository contains the network-modelling code, the precomputed results, and the figure notebooks.  
 The analysis code for the experimental (calcium-imaging) data is in a separate [repository](JFSauer/task_progress_sequences).  
 The imaging data can be found [here](https://doi.org/10.5281/zenodo.10528244). 
 
+
 ### Overview
 In mice performing an odour-guided two-choice task, mPFC populations form activity sequences that run through cue sampling, movement and reward. These sequences share a common temporal structure across trial types, which we call generalized task-progress tuning. This repository asks whether that shared structure has a computational benefit.  
+
 
 ### Task 
 A recurrent network has to reproduce K two-dimensional target trajectories. Each trajectory has three phases that mirror the behavioural task: a stationary sampling phase at the origin, a condition-specific curved movement phase, and a stationary reward phase at the endpoint. A single scalar cue c<sub>k</sub> tells the network which trajectory to produce.  
 
-* **Control network (α = 0):** The network is trained only to reproduce the trajectories. Its hidden units spontaneously form cue-locked sequences that are shared across conditions.  
-* **Constrained network (α > 0):** Training also penalises the cross-condition correlation of each unit's tuning curve (P<sub>corr</sub>). This forces condition-specific representations. 
+* **Control network (α = 0):** The network is trained only to reproduce the trajectories. Its hidden units spontaneously form cue-locked sequences that are shared across conditions.
+  
+* **Constrained network (α > 0):** Training also penalises the cross-condition correlation of each unit's tuning curve (P<sub>corr</sub>). This forces condition-specific representations.
+  
 * **Comparison:** Control and constrained networks are paired seed by seed: they share the connectivity mask, initial weights and batch order, and differ only in the penalty. Both reach the same final performance, but constrained networks need many more training steps. The gap grows with the number of conditions K.  
+
 
 ### Architecture and Training
 The model is a discrete-time recurrent rate network trained in closed loop to perform the main task. All hyperparameters are defined in [`src/config.py`](src/config.py); a complete description is provided in the **Methods** section of the paper.
 
+
 ### Model configuration
 
-| Component                | Specification                                                                                                                                              |
-| :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Architecture         | Discrete-time recurrent rate network with **\(N = 200\)** ReLU units                                                                                       |
-| Connectivity         | Fixed sparse recurrent mask with **\(p = 0.4\)**, giving 16,000 active recurrent connections; sampled once per seed                                        |
-| Input                | Static cue c<sub>k</sub> concatenated with the network's previous ($\hat{x}$, $\hat{y}$) outputs (d<sub>in</sub> = 2T - 1 = 263)                         |
-| Readout              | Bias-free linear map producing (x, y)                                                                                                                |
-| Training             | Closed-loop, free-running (**no teacher forcing**); Adam, learning rate \(2\times10^{-4}\), batch size **2,000**, gradient clipping at global norm **1.0** |
-| Regularization       | λ = (0.05\; 0.005 \;0.05)                                                                                                                      |
-| Stopping criterion   | Threshold MSE  θ<sup>*</sup> = 0.06                                                                                                            |
-| Trainable parameters | 93,200                                                                                                                                                 |
-| Seeds                | 20 matched control/constrained pairs                                                                                                                   |
+| Component                        | Specification                                                                                                                                              |
+| :---------------------------     | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Architecture                 | Discrete-time recurrent rate network with **\(N = 200\)** ReLU units                                                                                       |
+| Connectivity                 | Fixed sparse recurrent mask with **\(p = 0.4\)**, giving 16,000 active recurrent connections, sampled once per seed                                        |
+| Input                        | Static cue c<sub>k</sub> concatenated with the network's previous ($\hat{x}$, $\hat{y}$) outputs (d<sub>in</sub> = 2T - 1 = 263)                         |
+| Readout                      | Bias-free linear map producing ($\hat{x}$, $\hat{y}$)                                                                                                                |
+| Training                     | Closed-loop, free-running (**no teacher forcing**); Adam, learning rate \(2\times10^{-4}\), batch size **2,000**, gradient clipping at global norm **1.0** |
+| Regularization               | λ = (0.05, 0.005, 0.05)                                                                                                                      |
+| Stopping criterion           | Threshold MSE  θ<sup>*</sup> = 0.06                                                                                                            |
+| Trainable parameters         | 93,200                                                                                                                                                 |
+| Seeds                        | 20 matched control/constrained pairs                                                                                                                   |
 
 The training objective is:
 ```math
@@ -41,7 +48,8 @@ The training objective is:
 + \alpha \, P_{\mathrm{corr}} .
 ```
 
-Here, $`P_{\mathrm{corr}}`$ denotes the correlation penalty applied to the network activity across task conditions.                     |
+Here, $`P_{\mathrm{corr}}`$ denotes the correlation penalty applied to the network activity across task conditions.                    
+
 
 ### Repository structure
 ```
@@ -79,6 +87,7 @@ Install them with:
 pip install -r requirements.txt
 ```
 
+
 ### Notebooks
 1. Train and evaluate (1_train_and_evaluate.ipynb)  
 This notebook trains seed-matched pairs of control (α = 0) and constrained (α = 1) networks on the K = 5 trajectory task and saves their weights to results/models/. It then compares the two networks: predicted trajectories, sequential hidden-unit activity, representational similarity across conditions, and training speed.  
@@ -93,7 +102,8 @@ This notebook regenerates important modelling figures:
   - dataset size
   - trajectory angle
   - penalty strength
-    
+
+
 
 ### Citation
 If you use this code, please cite the paper:
