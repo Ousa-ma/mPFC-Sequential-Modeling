@@ -24,7 +24,7 @@ A recurrent network has to reproduce K two-dimensional target trajectories. Each
 ### Architecture and Training
 The model is a discrete-time recurrent rate network trained in closed loop to perform the main task. All hyperparameters are defined in [`src/config.py`](src/config.py); a complete description is provided in the **Methods** section of the paper.
 <p align="center">
-  <img src="results/figures/architecture.png" alt="Closed-loop recurrent network architecture" width="900">
+  <img src="results/figures/architecture.jpg" alt="Closed-loop recurrent network architecture" width="900">
 </p>
 
 ### Model configuration
